@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "0c1914bc-8d4b-48c8-b781-70aec77b96c2",
+		"name": "Grocery List",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33485459"
+	},
+	"item": [
+		{
+			"name": "create item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-type header est application/json et utf-8\", () => {\r",
+							"    pm.expect(pm.response.headers.get('content-type')).to.eql('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"const item = pm.response.json();\r",
+							"console.log(item)\r",
+							"\r",
+							"pm.test(\"L'objet retourné est bien l'objet envoyé\", () =>{\r",
+							"    const itemSent = JSON.parse(pm.request.body.raw);\r",
+							"    pm.expect(item.name).to.be.equal(itemSent.name)\r",
+							"    pm.expect(item.quantity).to.be.equal(itemSent.quantity)\r",
+							"    pm.expect(item.price).to.be.equal(itemSent.price)\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"id_last_item_created\", item._id.toString());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"milk\",\r\n    \"quantity\": 6,\r\n    \"price\": 3.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create item (price at 0)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"milk\",\r\n    \"quantity\": 3,\r\n    \"price\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create item (quantity at 0)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"milk\",\r\n    \"quantity\": 0,\r\n    \"price\": 2.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-type header est application/json et utf-8\", () => {\r",
+							"    pm.expect(pm.response.headers.get('content-type')).to.eql('application/json; charset=utf-8');\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/grocery_list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-type header est application/json et utf-8\", () => {\r",
+							"    pm.expect(pm.response.headers.get('content-type')).to.eql('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"const item = pm.response.json();\r",
+							"console.log(item)\r",
+							"\r",
+							"pm.test(\"L'objet retourné est bien l'objet envoyé\", () =>{\r",
+							"    const itemSent = JSON.parse(pm.request.body.raw);\r",
+							"    pm.expect(item.name).to.be.equal(itemSent.name)\r",
+							"    pm.expect(item.quantity).to.be.equal(itemSent.quantity)\r",
+							"    pm.expect(item.price).to.be.equal(itemSent.price)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sdfgd\",\r\n    \"quantity\": 7,\r\n    \"price\": 3.99,\r\n    \"isSelected\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list/{{id_last_item_created}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list",
+						"{{id_last_item_created}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify item (no id match)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"me\",\r\n    \"quantity\": 6,\r\n    \"price\": 3.99,\r\n    \"isSelected\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list/67253e7fcb21e3d46ecad92d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list",
+						"67253e7fcb21e3d46ecad92d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify item (price at 0)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"milke\",\r\n    \"quantity\": 6,\r\n    \"price\": 0,\r\n    \"isSelected\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/grocery_list/{{id_last_item_created}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list",
+						"{{id_last_item_created}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/grocery_list/{{id_last_item_created}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list",
+						"{{id_last_item_created}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item (no id match)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/grocery_list/67253daacb21e3d46ecad922",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"grocery_list",
+						"67253daacb21e3d46ecad922"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "id_last_item_created",
+			"value": ""
+		},
+		{
+			"key": "last_item_created",
+			"value": ""
+		},
+		{
+			"key": "nb_items",
+			"value": ""
+		}
+	]
+}
